@@ -1,16 +1,16 @@
 {
   "private": false,
-  "displayName": "Homebridge Nature Remo Light My Signal ID",
-  "name": "@nu50218/homebridge-nature-remo-light-my-signal-id",
-  "version": "1.1.0",
-  "description": "homebridge-nature-remo-light-my-signal-id",
+  "displayName": "Homebridge Nature Remo Light Controller using Signal ID",
+  "name": "@bean1310/homebridge-nature-remo-light-controller-using-signal-id",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for controlling lights using Signal ID and syncing light status between Nature remo and Homekit",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nu50218/homebridge-nature-remo-light-my-signal-id.git"
+    "url": "git://github.com/bean1310/homebridge-nature-remo-light-controller-using-signal-id.git"
   },
   "bugs": {
-    "url": "https://github.com/nu50218/homebridge-nature-remo-light-my-signal-id/issues"
+    "url": "https://github.com/bean1310/homebridge-nature-remo-light-controller-using-signal-id/issues"
   },
   "engines": {
     "node": ">=14.18.1",

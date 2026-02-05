@@ -102,11 +102,14 @@ export class Accessory implements AccessoryPlugin {
       }
     } catch (error) {
       this.log.error('Failed to update lightbulb state.', error);
-      this.state = previousState;
-      this.lightbulbService.updateCharacteristic(
-        this.api.hap.Characteristic.On,
-        previousState,
-      );
+      // Only revert if no newer request has changed the state
+      if (this.state === targetState) {
+        this.state = previousState;
+        this.lightbulbService.updateCharacteristic(
+          this.api.hap.Characteristic.On,
+          previousState,
+        );
+      }
     }
   }
 }

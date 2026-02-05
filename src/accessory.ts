@@ -42,10 +42,27 @@ export class Accessory implements AccessoryPlugin {
     this.lightbulbService
       .getCharacteristic(this.api.hap.Characteristic.On)
       .onGet(async () => {
-        return this.lightbulb.status();
+        try {
+          const currentState = await this.lightbulb.status();
+          this.state = currentState;
+          return currentState;
+        } catch (error) {
+          this.log.error(
+            'Failed to read lightbulb state, returning cached value.',
+            error,
+          );
+          return this.state;
+        }
       })
       .onSet(async (value) => {
-        return value ? this.lightbulb.on() : this.lightbulb.off();
+        const targetState = value as boolean;
+        const previousState = this.state as boolean;
+        this.state = targetState;
+        this.lightbulbService.updateCharacteristic(
+          this.api.hap.Characteristic.On,
+          targetState,
+        );
+        void this.applyLightbulbState(targetState, previousState);
       });
 
     this.informationService = new this.api.hap.Service.AccessoryInformation()
@@ -74,6 +91,23 @@ export class Accessory implements AccessoryPlugin {
    */
   getServices(): Service[] {
     return [this.informationService, this.lightbulbService];
+  }
+
+  private async applyLightbulbState(targetState: boolean, previousState: boolean): Promise<void> {
+    try {
+      if (targetState) {
+        await this.lightbulb.on();
+      } else {
+        await this.lightbulb.off();
+      }
+    } catch (error) {
+      this.log.error('Failed to update lightbulb state.', error);
+      this.state = previousState;
+      this.lightbulbService.updateCharacteristic(
+        this.api.hap.Characteristic.On,
+        previousState,
+      );
+    }
   }
 }
   
